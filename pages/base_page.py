@@ -29,7 +29,7 @@ class BasePage:
         element = self.find_element(locator, timeout)
         self.driver.execute_script("arguments[0].scrollIntoView();", element)
 
-    def transition_to_next_tub(self):
+    def transition_to_next_tab(self):
         self.driver.switch_to.window(self.driver.window_handles[1])
 
     def transition_to_previous_tab(self):

@@ -139,7 +139,7 @@ class OrderPageScooter(BasePage):
     # переход через редирект в новое окно с главной страницей Дзена по клику на логотип Яндекс
     def redirect_by_clicking_logo_yandex(self):
         self.click_element(OrderTrackingPageScooterLocators.LOGO_YANDEX)
-        self.transition_to_next_tub()
+        self.transition_to_next_tab()
         self.find_element(OrderTrackingPageScooterLocators.LOGO_DZEN)
         current_url = self.driver.current_url
         return current_url
