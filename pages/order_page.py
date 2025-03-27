@@ -1,88 +1,87 @@
-import allure
+from allure import step
 
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 from locators.order_page_locators import OrderPageScooterLocators
 from locators.home_page_locators import HomePageScooterLocators
 from locators.order_tracking_page_locators import OrderTrackingPageScooterLocators
+from pages.base_page import BasePage
 
 from src.config import Config
 
 
-class OrderPageScooter:
+class OrderPageScooter(BasePage):
 
     def __init__(self, driver):
-        self.driver = driver
+        super().__init__(driver)
 
-    @allure.step(f'ожидаем загрузку экрана заказа "Для кого самокат" на странице {Config.URL}/order')
+    @step(f'ожидаем загрузку экрана заказа "Для кого самокат" на странице {Config.URL}/order')
     # метод ожидания загрузки экрана заказа "Для кого самокат"
     def wait_for_load_order_form_1(self):
-        WebDriverWait(self.driver, 5).until(EC.visibility_of_element_located(OrderPageScooterLocators.form_title_1))
+        self.wait_for_element_visible(OrderPageScooterLocators.FORM_TITLE_1)
 
-    @allure.step(f'ожидаем загрузку экрана "Про аренду" на странице {Config.URL}/order')
+    @step(f'ожидаем загрузку экрана "Про аренду" на странице {Config.URL}/order')
     # метод ожидания загрузки экрана заказа "Про аренду"
     def wait_for_load_order_form_2(self):
-        WebDriverWait(self.driver, 5).until(EC.visibility_of_element_located(OrderPageScooterLocators.form_title_2))
+        self.wait_for_element_visible(OrderPageScooterLocators.FORM_TITLE_2)
 
-    @allure.step('Заполняем поле "Имя"')
+    @step('Заполняем поле "Имя"')
     # заполняем поле Имя
     def set_name(self, name):
-        self.driver.find_element(*OrderPageScooterLocators.name).send_keys(name)
+        self.enter_text(OrderPageScooterLocators.NAME, name)
 
-    @allure.step('Заполняем поле "Фамилия"')
+    @step('Заполняем поле "Фамилия"')
     # заполняем поле Фамилия
     def set_surname(self, surname):
-        self.driver.find_element(*OrderPageScooterLocators.surname).send_keys(surname)
+        self.enter_text(OrderPageScooterLocators.SURNAME, surname)
 
-    @allure.step('Заполняем поле "Адрес"')
+    @step('Заполняем поле "Адрес"')
     # заполняем поле Адрес
     def set_address(self, address):
-        self.driver.find_element(*OrderPageScooterLocators.address).send_keys(address)
+        self.enter_text(OrderPageScooterLocators.ADDRESS, address)
 
-    @allure.step('Кликаем на поле "Станция метро" и в выпадающем списке выбираем станцию')
+    @step('Кликаем на поле "Станция метро" и в выпадающем списке выбираем станцию')
     # заполняем поле Метро
     def set_metro_station(self, metro_station):
-        self.driver.find_element(*OrderPageScooterLocators.metro_station).click()
-        self.driver.find_element(*metro_station).click()
+        self.click_element(OrderPageScooterLocators.METRO_STATION)
+        self.click_element(metro_station)
 
-    @allure.step('Заполняем поле "Телефон: на него позвонит курьер"')
+    @step('Заполняем поле "Телефон: на него позвонит курьер"')
     # заполняем поле Телефон
     def set_phone(self, phone):
-        self.driver.find_element(*OrderPageScooterLocators.phone).send_keys(phone)
+        self.enter_text(OrderPageScooterLocators.PHONE, phone)
 
-    @allure.step('Кликаем на кнопку "Далее"')
+    @step('Кликаем на кнопку "Далее"')
     # клик на кнопку "Далее" в форме "Для кого самокат"
     def click_on_next_button(self):
-        self.driver.find_element(*OrderPageScooterLocators.next_button).click()
+        self.click_element(OrderPageScooterLocators.NEXT_BUTTON)
 
-    @allure.step('Кликаем на поле "Когда привезти самокат" и в выпадающем календаре выбираем дату не ранее завтрашней')
+    @step('Кликаем на поле "Когда привезти самокат" и в выпадающем календаре выбираем дату не ранее завтрашней')
     # заполняем поле Когда привезти самокат
     def set_date(self, date):
-        self.driver.find_element(*OrderPageScooterLocators.date).click()
-        self.driver.find_element(*date).click()
+        self.click_element(OrderPageScooterLocators.DATE)
+        self.click_element(date)
 
-    @allure.step('Кликаем на поле "Срок аренды" и выбираем значение из выпадающего списка')
+    @step('Кликаем на поле "Срок аренды" и выбираем значение из выпадающего списка')
     # выбираем Срок аренды
     def set_rental_period(self, rental_period):
-        self.driver.find_element(*OrderPageScooterLocators.rental_period).click()
-        self.driver.find_element(*rental_period).click()
+        self.click_element(OrderPageScooterLocators.RENTAL_PERIOD)
+        self.click_element(rental_period)
 
-    @allure.step('В поле "Цвет самоката" ставим галочку в чек-боксе')
+    @step('В поле "Цвет самоката" ставим галочку в чек-боксе')
     # выбираем Цвет самоката
     def set_color(self, color):
-        self.driver.find_element(*color).click()
+        self.click_element(color)
 
-    @allure.step('Заполняем поле "Комментарий лля курьера"')
+    @step('Заполняем поле "Комментарий лля курьера"')
     # заполняем поле Комментарий для курьера
     def set_comment(self, comment):
-        self.driver.find_element(*OrderPageScooterLocators.comment).send_keys(comment)
+        self.enter_text(OrderPageScooterLocators.COMMENT, comment)
 
-    @allure.step('Кликаем на кнопку "Заказать" в форме "Про аренду"')
+    @step('Кликаем на кнопку "Заказать" в форме "Про аренду"')
     # клик на кнопку "Заказать" в форме "Про аренду"
     def click_order_button(self):
-        self.driver.find_element(*OrderPageScooterLocators.order_button).click()
+        self.click_element(OrderPageScooterLocators.ORDER_BUTTON)
 
     # метод оформления заказа в двух экранах "Для кого самокат" и "Про аренду"
     def order(self, name, surname, address, metro_station, phone, date, rental_period, color, comment):
@@ -99,55 +98,54 @@ class OrderPageScooter:
         self.set_comment(comment)
         self.click_order_button()
 
-    @allure.step('Ожидаем всплывающее окно с текстом "Хотите оформить заказ"')
+    @step('Ожидаем всплывающее окно с текстом "Хотите оформить заказ"')
     # ожидание всплывающего окна для подтверждения заказа
     def wait_for_order_confirmation_window(self):
-        WebDriverWait(self.driver, 5).until(EC.visibility_of_element_located(OrderPageScooterLocators.message_question))
+        self.wait_for_element_visible(OrderPageScooterLocators.MESSAGE_QUESTION)
 
-    @allure.step('Кликаем на кнопку "Да" во всплывающем окне с вопросом о подтверждении заказа"')
+    @step('Кликаем на кнопку "Да" во всплывающем окне с вопросом о подтверждении заказа"')
     # клик на кнопку "Да" для подтверждения заказа
     def click_on_button_yes_in_order_confirmation_window(self):
-        self.driver.find_element(*OrderPageScooterLocators.button_yes).click()
+        self.click_element(OrderPageScooterLocators.BUTTON_YES)
 
-    @allure.step('Ожидаем всплывающее окно с сообщением об успешном создании заказа')
+    @step('Ожидаем всплывающее окно с сообщением об успешном создании заказа')
     # ожидание всплывающего окна с сообщением об успешном создании заказа
     def wait_for_successful_order_creation_window(self):
-        wait = WebDriverWait(self.driver, 5)
         try:
-            wait.until(EC.visibility_of_element_located(OrderPageScooterLocators.message_ok))
+            self.wait_for_element_visible(OrderPageScooterLocators.MESSAGE_OK)
             return True
         except TimeoutException:
             return False
 
-    @allure.step('Кликаем на кнопку "Посмотреть статус" во всплывающем окне с сообщением об успешном создании заказа')
+    @step('Кликаем на кнопку "Посмотреть статус" во всплывающем окне с сообщением об успешном создании заказа')
     # клик на кнопку "Посмотреть статус"
     def click_view_status_button(self):
-        self.driver.find_element(*OrderPageScooterLocators.view_status_button).click()
+        self.click_element(OrderPageScooterLocators.VIEW_STATUS_BUTTON)
 
-    @allure.step('Ожидаем загрузку страницы отслеживания заказа')
+    @step('Ожидаем загрузку страницы отслеживания заказа')
     # ожидание загрузки страницы отслеживания заказа
     def wait_for_order_tracking_page(self):
-        WebDriverWait(self.driver, 5).until(
-            EC.visibility_of_element_located(OrderTrackingPageScooterLocators.order_cancel_button))
+        self.wait_for_element_visible(OrderTrackingPageScooterLocators.ORDER_CANCEL_BUTTON)
 
-    @allure.step(f'Кликаем на логотип Самокат в хедере страницы и ожидаем перехода на {Config.URL}')
+    @step(f'Кликаем на логотип Самокат в хедере страницы и ожидаем перехода на {Config.URL}')
     # переход на главную страницу по клику на логотип Самокат
     def transition_by_clicking_logo_scooter(self):
-        self.driver.find_element(*OrderTrackingPageScooterLocators.logo_scooter).click()
-        WebDriverWait(self.driver, 5).until(EC.visibility_of_element_located(HomePageScooterLocators.home_page_text))
+        self.click_element(OrderTrackingPageScooterLocators.LOGO_SCOOTER)
+        self.wait_for_element_visible(HomePageScooterLocators.HOME_PAGE_TEXT)
         return self.driver.current_url
 
-    @allure.step(f'Кликаем на логотип Яндекс в хедере страницы и ожидаем открытия через ридирект {Config.URL_DZEN}')
+    @step(f'Кликаем на логотип Яндекс в хедере страницы и ожидаем перехода через рeдирект на новую вкладку '
+          f' {Config.URL_DZEN}')
     # переход через редирект в новое окно с главной страницей Дзена по клику на логотип Яндекс
     def redirect_by_clicking_logo_yandex(self):
-        self.driver.find_element(*OrderTrackingPageScooterLocators.logo_Yandex).click()
-        self.driver.switch_to.window(self.driver.window_handles[1])
-        WebDriverWait(self.driver, 5).until(EC.presence_of_element_located(OrderTrackingPageScooterLocators.logo_dzen))
+        self.click_element(OrderTrackingPageScooterLocators.LOGO_YANDEX)
+        self.transition_to_next_tub()
+        self.find_element(OrderTrackingPageScooterLocators.LOGO_DZEN)
         current_url = self.driver.current_url
         return current_url
 
-    @allure.step('Закрываем текущую вкладку и возвращаемся на предыдущую вкладку')
+    @step('Закрываем текущую вкладку и возвращаемся на предыдущую вкладку')
     # закрытие текущей вкладки и возврат на предыдущую вкладку
     def close_tab_and_return_to_previous_tab(self):
         self.driver.close()
-        self.driver.switch_to.window(self.driver.window_handles[0])
+        self.transition_to_previous_tab()
